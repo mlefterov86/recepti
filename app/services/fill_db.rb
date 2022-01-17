@@ -44,7 +44,10 @@ class FillDb
       puts "===> Parsing file '#{file}' started!"
       n = 1
       File.foreach(file) do |line|
-        break if n == 100
+        if n == 1000
+          puts "===> Parsing file '#{file}' done!"
+          break
+        end
 
         @recipe = JSON.parse(line)
         Recipe.find_or_initialize_by(name: @recipe['name']).tap do |r|

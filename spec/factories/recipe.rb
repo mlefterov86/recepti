@@ -10,5 +10,7 @@ FactoryBot.define do
 
     difficulty
     author
+
+    ingredients { |a| [a.association(:ingredient)] }
   end
 end
