@@ -37,7 +37,7 @@ class Recipes extends React.Component {
       })
       .then(response => {
         const options = response.map((ingredient) => (
-          {value: ingredient.name, label: ingredient.name}
+          {value: ingredient.id, label: ingredient.name}
         ))
         this.setState({ options })
       })
@@ -46,10 +46,10 @@ class Recipes extends React.Component {
 
   getRecipes(param) {
     let query_params = param.map((option) => (
-      {name: option.value}
+      {id: option.value, name: option.name}
     ));
 
-    const recipes_url = `/api/v1/recipes?query_params=${JSON.stringify(query_params)}`;
+    const recipes_url = `/api/v1/recipes?ingredient_ids=${JSON.stringify(query_params)}`;
     fetch(recipes_url)
       .then(response => {
         if (response.ok) {

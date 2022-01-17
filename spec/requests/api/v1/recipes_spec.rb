@@ -7,15 +7,15 @@ RSpec.describe 'Api::V1::Recipes', type: :request do
     let(:response_body) do
       [
         {
-          "id"=> recipe2.id,
-          "name"=>recipe2.name,
-          "ingredients"=>recipe2.ingredients.map { |r| {'name' => r.name}}
+          'id' => recipe2.id,
+          'name' => recipe2.name,
+          'ingredients' => recipe2.ingredients.map { |r| { 'id' => r.id, 'name' => r.name } }
         },
         {
-          "id"=> recipe1.id,
-          "name"=>recipe1.name,
-          "ingredients"=>recipe1.ingredients.map { |r| {'name' => r.name}}
-        },
+          'id' => recipe1.id,
+          'name' => recipe1.name,
+          'ingredients' => recipe1.ingredients.map { |r| { 'id' => r.id, 'name' => r.name } }
+        }
       ]
     end
 
@@ -29,12 +29,16 @@ RSpec.describe 'Api::V1::Recipes', type: :request do
     end
 
     context 'when query params provided' do
-      let(:query_params) { [ { 'name' => 'ingredient1' } ] }
+      let(:query_params) { [{ 'id' => recipe1.ingredients.first.id }] }
 
       it 'returns http success' do
-        get "/api/v1/recipes", params: { query_params: query_params.to_json }
+        get '/api/v1/recipes', params: { ingredient_ids: query_params.to_json }
         body = JSON.parse(response.body)
-        expect(body).to eq response_body
+        expect(body).to eq [{
+                               'id' => recipe1.id,
+                              'name' => recipe1.name,
+                              'ingredients' => recipe1.ingredients.map { |r| { 'id' => r.id, 'name' => r.name } }
+                            }]
         expect(response).to have_http_status(:success)
       end
     end

@@ -15,21 +15,15 @@ class Api::V1::RecipesController < ApplicationController
     if ids.present?
       Recipe.where(id: ids)
     else
-      Recipe.all.order(created_at: :desc)[0..100]
+      Recipe.all.order(created_at: :desc).limit(100)
     end
 
   end
 
   def recipe_ids
-    return if params['query_params'].blank?
+    return if params['ingredient_ids'].blank?
 
-    ingredient_ids = []
-    parsed_params = JSON.parse(params['query_params'])
-    parsed_params.each do |param|
-      ingredient = param['name']
-      ingredient_ids = ingredient_ids + Ingredient.where('name LIKE ?',  "%#{ingredient}%").map(&:id)
-    end
-
+    ingredient_ids = JSON.parse(params['ingredient_ids']).map{ |ing| ing['id'] }
     Recipe.includes(:ingredients).where(ingredients: {id: ingredient_ids}).map(&:id)
   end
 end
