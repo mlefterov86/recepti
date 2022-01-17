@@ -7,15 +7,8 @@ FactoryBot.define do
     rate { "4.8" }
     budget { "Coût moyen" }
     people_quantity { "4" }
-    ingredients {
-      [
-        '1 ingredient',
-        '2 ingredient',
-        '3 ingredient',
-      ]
-    }
 
-    diffculty
+    difficulty
     author
   end
 end

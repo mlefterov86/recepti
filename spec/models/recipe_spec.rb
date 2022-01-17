@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Recipe, type: :model do
   let(:recipe) { FactoryBot.build(:recipe) }
+  let(:ingredient) { FactoryBot.build(:ingredient) }
 
   # model fields
   it { is_expected.to have_db_column(:name).of_type(:string) }
@@ -11,11 +12,11 @@ RSpec.describe Recipe, type: :model do
   it { is_expected.to have_db_column(:rate).of_type(:decimal) }
   it { is_expected.to have_db_column(:budget).of_type(:string) }
   it { is_expected.to have_db_column(:people_quantity).of_type(:integer) }
-  it { is_expected.to have_db_column(:ingredients).of_type(:text) }
 
   # model associations
   it { is_expected.to belong_to(:author) }
   it { is_expected.to belong_to(:difficulty) }
+  it { is_expected.to have_and_belong_to_many(:ingredients) }
 
   # model validations
   it { is_expected.to validate_presence_of(:name) }
@@ -26,7 +27,7 @@ RSpec.describe Recipe, type: :model do
       let(:invalid_recipe) do
         Recipe.new(
           name: 'Recipe name',
-          ingredients: ['something']
+          ingredients: [ingredient]
         )
       end
 
@@ -44,7 +45,7 @@ RSpec.describe Recipe, type: :model do
       let(:recipe) do
         Recipe.new(
           name: 'Recipe name',
-          ingredients: ['something'],
+          ingredients: [ingredient],
           author: author,
           difficulty: difficulty,
         )

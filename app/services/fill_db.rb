@@ -39,9 +39,12 @@ class FillDb
     end
 
     def parse_and_store_in_db(file)
+      puts "===> FYI for speed up stores only the first 100 recipes"
       puts "===> Parsing file '#{file}' started!"
       n = 1
       File.foreach(file) do |line|
+        break if n == 100
+
         @recipe = JSON.parse(line)
         Recipe.find_or_initialize_by(name: @recipe['name']).tap do |r|
           r.author = author
@@ -52,13 +55,22 @@ class FillDb
           r.rate = @recipe['rate']
           r.budget = @recipe['budget']
           r.people_quantity = @recipe['people_quantity']
-          r.ingredients = @recipe['ingredients']
+          r.ingredients = recipe_ingredients(@recipe['ingredients'])
           r.save!
           puts "===> #{n} recipe data stored!"
           n += 1
         end
       end
       puts "===> Parsing file '#{file}' done!"
+    end
+
+    def recipe_ingredients(ingredients)
+      ingredients_array = []
+      ingredients.each do |ingredient|
+        ing = Ingredient.find_or_create_by!(name: ingredient)
+        ingredients_array << ing
+      end
+      ingredients_array
     end
 
     def download_file
