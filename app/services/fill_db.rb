@@ -14,6 +14,7 @@ class FillDb
 
       parse_and_store_in_db(file)
       removes_zip_file
+      true
     end
 
     private

@@ -3,6 +3,10 @@ class Api::V1::RecipesController < ApplicationController
     render json: recipes, each_serializer: RecipeSerializer
   end
 
+  def fill_db
+    render json: { success: true }, status: 200 if FillDb.call
+  end
+
   private
 
   def recipes
