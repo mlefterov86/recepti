@@ -111,6 +111,11 @@ class Recipes extends React.Component {
             />
           </div>
         </section>
+        <section className="jumbotron jumbotron-fluid text-center">
+          <div className="container py-5">
+            <h1 className="display-4">Recipes count: {recipes.length}</h1>
+          </div>
+        </section>
         <div className="py-5">
           <main className="container">
             <div className="row">
