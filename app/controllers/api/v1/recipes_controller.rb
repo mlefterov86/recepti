@@ -15,7 +15,7 @@ class Api::V1::RecipesController < ApplicationController
     if ids.present?
       Recipe.where(id: ids)
     else
-      Recipe.all.order(created_at: :desc).limit(100)
+      Recipe.all.order(created_at: :desc)
     end
 
   end
